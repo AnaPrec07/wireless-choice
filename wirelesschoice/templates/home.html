@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% block body %}
+<section class="hero"><h1>Tell us how you listen. We'll find your headphones.</h1>
+<form action="/recommend" method="get"><input name="need" required maxlength="300" placeholder="e.g. quiet commute, comfortable for long flights, no budget limit">
+<div class="row"><select name="form"><option value="">Any style</option><option>over-ear</option><option>in-ear</option><option>open-ear</option></select>
+<select name="tier"><option value="">Any price tier</option><option>budget</option><option>mid</option><option>premium</option></select>
+<select name="anc"><option value="">Noise cancelling: any</option><option value="yes">ANC only</option><option value="no">No ANC</option></select>
+<button>Recommend</button></div></form></section>
+{% if guides %}<h2>Latest guides</h2><div class="grid">{% for g in guides %}<a class="card" href="/p/{{ g.slug }}"><h3>{{ g.title }}</h3></a>{% endfor %}</div>{% endif %}
+<h2>All models we cover</h2><div class="grid">{% for p in products %}
+<a class="card" href="/p/{{ p.slug }}"><h3>{{ p.name }}</h3><p>{{ p.blurb }}</p><small>{{ p.form }} · {{ p.tier }}{% if p.anc %} · ANC{% endif %}</small></a>{% endfor %}</div>
+{% endblock %}

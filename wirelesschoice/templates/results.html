@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block title %}Headphones for: {{ need }}{% endblock %}{% block body %}
+<h1>Picks for “{{ need }}”</h1>
+{% if not top %}<p>No matches. Try fewer filters.</p>{% endif %}
+{% if top and top[0].why_all %}<div class="note">{{ top[0].why_all|md|safe }}</div>{% endif %}
+{% for t in top %}<article class="card"><h2>{{ loop.index }}. {{ t.product.name }}</h2><p>{{ t.product.blurb }}</p>
+<p><b>Owners like:</b> {{ t.product.pros|join(", ") }}<br><b>Watch out:</b> {{ t.product.cons|join(", ") }}</p>
+{% for e in t.evidence %}<blockquote>{{ e }}</blockquote>{% endfor %}
+{% if t.insights and t.insights.demo %}<small>Demo data – real owner insights appear once review sources are connected.</small>{% endif %}
+<p><a class="btn" rel="sponsored nofollow noopener" href="{{ t.link }}">Check price on Amazon</a> <a href="/p/{{ t.product.slug }}">Details</a></p></article>{% endfor %}
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block title %}{{ p.name }} review insights{% endblock %}{% block body %}
+<h1>{{ p.name }}</h1><p>{{ p.blurb }}</p><p><small>{{ p.form }} · {{ p.tier }} price tier{% if p.anc %} · active noise cancelling{% endif %}</small></p>
+<p><a class="btn" rel="sponsored nofollow noopener" href="/go/{{ p.slug }}?src=page">Check price on Amazon</a></p>
+{% if ins %}<h2>What owners say</h2>{% if ins.demo %}<p class="note">Demo placeholder data.</p>{% endif %}
+{% if ins.summary %}<p>{{ ins.summary }}</p>{% endif %}
+<table>{% for a, v in ins.aspects.items() %}<tr><td>{{ a }}</td><td><meter min="-1" max="1" value="{{ v.sentiment }}"></meter> {{ v.sentiment }}</td></tr>{% endfor %}</table>{% endif %}
+{% if guide %}<h2>Guide</h2>{{ guide.body|md|safe }}{% endif %}
+{% endblock %}

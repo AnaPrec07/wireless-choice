@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% block body %}
+<h1>Approval queue</h1>
+<p>AI: <b>{{ "Claude connected" if llm_on else "offline templates (set ANTHROPIC_API_KEY)" }}</b> · clicks: {{ stats.clicks }} {% for s in stats.by_slug %}· {{ s.slug }} {{ s.c }}{% endfor %}</p>
+<form method="post" action="/admin/run"><button>Run pipeline now</button></form>
+{% if stats.last_run %}<details><summary>Last run</summary><pre>{{ stats.last_run.log }}</pre></details>{% endif %}
+<nav class="tabs">{% for s in ["pending","approved","published","ready","rejected"] %}<a href="/admin?status={{ s }}" {% if s==status %}class="on"{% endif %}>{{ s }}</a>{% endfor %}</nav>
+{% for it in items %}<article class="card"><h3>#{{ it.id }} {{ it.kind }} → {{ it.channel }}: {{ it.title }}</h3>
+{% if it.flags %}<p class="warn">⚠ {{ it.flags }}</p>{% endif %}
+<form method="post" action="/admin/{{ it.id }}/save"><textarea name="body" rows="{{ 14 if it.kind != 'social' else 6 }}">{{ it.body }}</textarea>
+<button>Save edits</button>
+{% if it.status == "pending" %}<button formaction="/admin/{{ it.id }}/approve">Save &amp; approve</button><button formaction="/admin/{{ it.id }}/reject" class="danger">Reject</button>{% endif %}</form></article>
+{% else %}<p>Nothing here.</p>{% endfor %}
+{% endblock %}
